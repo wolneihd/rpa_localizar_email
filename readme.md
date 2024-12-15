@@ -26,6 +26,16 @@ Este projeto foi desenvolvido para um cliente com a finalidade de automatizar a 
 - **Envio de E-mails**:
   - Integração com o Gmail para envio programático e seguro.
 
+## Passo a Passo para Utilização
+1. **Preparar os arquivos necessários**:
+   - Incluir a senha do aplicativo Google no arquivo `senha.txt`.
+   - Incluir o e-mail Gmail no arquivo `email.txt`.
+2. **Executar o script principal**:
+   - Clique no arquivo `rodar.py` ou execute-o pelo terminal:
+     ```bash
+     python rodar.py
+     ```
+
 ## Cronograma de Desenvolvimento
 - **Duração**: 5 dias.
 - **Metodologia**:
@@ -36,3 +46,4 @@ Este projeto foi desenvolvido para um cliente com a finalidade de automatizar a 
 
 ## Observações
 Este projeto representa uma solução altamente customizada, focada em otimizar tarefas repetitivas e aumentar a eficiência do cliente na comunicação personalizada com os contatos identificados.
+
