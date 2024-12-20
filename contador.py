@@ -1,10 +1,17 @@
 import time
+import random
 
-def contador_segundos(segundos: int, imprimir: bool = False):
-    for index, segundo in enumerate(range(1,segundos+1)):
-        time.sleep(1)
-        if imprimir:
-            print(f'contador: {index+1} de {segundos}')
+# -------------------------------------------
+# Edição de periodo de segundos de espera
+# -------------------------------------------
+inicio = 5
+fim = 10
+
+def contador_segundos(imprimir: bool = False):
+    segundos = random.uniform(inicio, fim)
+    if imprimir:
+        print(f'Aguardando {segundos:.2f} segundos (entre {inicio}seg. e {fim}seg.)')
+    time.sleep(segundos)
 
 if __name__ == "__main__":
-    contador_segundos(5)
+    contador_segundos()

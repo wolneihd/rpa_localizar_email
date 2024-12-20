@@ -19,17 +19,24 @@ def extract_name_email(line):
 
     return name, email
 
-# Função para selecionar o e-mail com maior similaridade ao nome
-def select_most_similar_email(name, emails):
+# Função para selecionar os dois e-mails com maior similaridade ao nome
+def select_similar_emails(name, emails):
     email_list = emails.split('; ')
-    max_similarity = 0
-    best_email = None
+    valid_domains = ['.br', '.com', '.org']
+    email_similarities = []
+
+    # Comparar com a parte antes do '@' de cada e-mail
     for email in email_list:
-        similarity = calculate_similarity(name, email.split('@')[0])  # Comparar com a parte antes do '@'
-        if similarity > max_similarity:
-            max_similarity = similarity
-            best_email = email
-    return best_email
+        # Verificar se o e-mail termina com um dos domínios válidos
+        if any(email.endswith(domain) for domain in valid_domains):
+            similarity = calculate_similarity(name, email.split('@')[0])
+            email_similarities.append((email, similarity))
+
+    # Ordenar os e-mails pela similaridade em ordem decrescente e pegar os dois mais similares
+    email_similarities.sort(key=lambda x: x[1], reverse=True)
+    top_emails = [email for email, _ in email_similarities[:2]]  # Pega os dois e-mails com maior similaridade
+
+    return '; '.join(top_emails)  # Retorna os dois e-mails mais similares, separados por ponto e vírgula
 
 # Função principal
 def process_files(arquivo_sujo_csv: str, arquivo_limpo_csv: str):
@@ -64,8 +71,8 @@ def process_files(arquivo_sujo_csv: str, arquivo_limpo_csv: str):
         # Consolidar e-mails por nome
         df = df.groupby('Name', as_index=False).agg({'Email': lambda x: '; '.join(sorted(set('; '.join(x).split('; '))))})
 
-        # Selecionar o e-mail mais similar ao nome e garantir que cada nome apareça apenas uma vez
-        df['Email'] = df.apply(lambda row: select_most_similar_email(row['Name'], row['Email']), axis=1)
+        # Selecionar os dois e-mails mais similares ao nome
+        df['Email'] = df.apply(lambda row: select_similar_emails(row['Name'], row['Email']), axis=1)
 
         # Salvar os dados processados em um arquivo CSV
         df.to_csv(arquivo_limpo_csv, index=False, encoding='utf-8', header=None)
